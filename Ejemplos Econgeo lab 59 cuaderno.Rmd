@@ -1,0 +1,301 @@
+---
+title: "Ejemplos EconGeo"
+author: "Luz Yolanda Rivera"
+date: "10/23/2021"
+output: html_document
+---
+
+
+#llamar a Econgeo de biblioteca
+```{r}
+library(EconGeo)
+```
+
+## generate vectors of industrial and population count
+## generar vectores de conteo industrial(ind)  y poblacional(pop)
+```{r}
+ind <- c(0, 10, 10, 30, 50)
+pop <- c(10, 15, 20, 25, 30)
+```
+
+# check the ind vector
+#comprobar el vector ind y el vector pop
+```{r}
+ind
+```
+
+```{r}
+pop
+```
+
+## run the function (30% of the population produces 50% of the industrial output)
+## se corre la función hoover.curve y apreciamos como el 30% de la población produce 
+#el 50% de la producción que genera la industria y se aprecia en la gráfica
+```{r}
+Hoover.curve (ind, pop)
+```
+
+# compute the corresponding Hoover Gini
+#Se calcula  el coheficiente Gini correspondiente (es el 31%)
+```{r}
+Hoover.Gini (ind, pop)
+```
+
+#################################################################################################
+#Ejemplo 2. GINI
+
+## generate vectors of industrial count
+## generar vectores de conteo industrial(ind)
+```{r}
+ind <- c(0, 10, 10, 30, 50)
+```
+
+## run the function
+#corremos la función para calcuar Gini de la industria
+```{r}
+Gini (ind)
+```
+
+## generate a region - industry matrix
+## generamos una matriz de la industria de la región de 4 columnas( I1..I4) y cinco renglones de regiones (R1..R5)
+```{r}
+mat = matrix (
+  c (0, 1, 0, 0,
+     0, 1, 0, 0,
+     0, 1, 0, 0,
+     0, 1, 0, 1,
+     0, 1, 1, 1), ncol = 4, byrow = T)
+rownames(mat) <- c ("R1", "R2", "R3", "R4", "R5")
+colnames(mat) <- c ("I1", "I2", "I3", "I4")
+```
+
+##revisamos la matriz que se generó
+```{r}
+mat
+```
+
+## run the function
+#Hacemos el cálculo Gini de la matriz que generamos
+```{r}
+Gini (mat)
+```
+
+## run the function by aggregating all industries
+##agregamos todas las industrias
+```{r}
+Gini (rowSums(mat))
+```
+
+## run the function for industry #1 only (perfect equality)
+##si ejecutamos Gini solo para la industria 1, obtendremos una igualdad perfecta
+```{r}
+Gini (mat[,1])
+```
+
+## run the function for industry #2 only (perfect equality)
+#Corremos la función para la Industria dos que también presenta igualdad perfecta=0
+```{r}
+Gini (mat[,2])
+```
+
+## run the function for industry #3 only (perfect unequality: max Gini = (5-1)/5)
+## corremos la función para la industria 4 que presenta desigualdad = .8 ya que solo una región produce todo
+#por eso el cálculo de 5-4/5 nos da desigualdad perfecta
+```{r}
+Gini (mat[,3])
+```
+
+## run the function for industry #4 only (top 40% produces 100% of the output)
+# para la industria 4 es producida por el 40% de las regiones
+```{r}
+Gini (mat[,4])
+```
+#########################################################################################################
+#Ejemplo 3. HOOVER GINI
+
+## utilizamos los vectores que ya habíamos generado antes
+##ind <- c(0, 10, 10, 30, 50)
+##pop <- c(10, 15, 20, 25, 30)
+## run the function (30% of the population produces 50% of the industrial output)
+#corremos la función (se obtiene que el 30% de la población produce el 50% de la producción industrial)
+```{r}
+Hoover.curve (ind, pop)
+Hoover.curve (ind, pop, pdf = TRUE)
+Hoover.curve (ind, pop, plot = F)
+```
+
+## generate a region - industry matrix
+##generamos una matriz mat
+```{r}
+mat = matrix (
+  c (0, 10, 0, 0,
+     0, 15, 0, 0,
+     0, 20, 0, 0,
+     0, 25, 0, 1,
+     0, 30, 1, 1), ncol = 4, byrow = T)
+rownames(mat) <- c ("R1", "R2", "R3", "R4", "R5")
+colnames(mat) <- c ("I1", "I2", "I3", "I4")
+```
+Generamos las curvas
+
+```{r}
+Hoover.curve (mat, pop)
+#Hoover.curve (mat, pop, pdf = TRUE) para generar el pdf
+Hoover.curve (mat, pop, plot = FALSE)
+```
+
+## run the function by aggregating all industries
+#agregamos todas las industrias
+```{r}
+Hoover.curve (rowSums(mat), pop)
+#Hoover.curve (rowSums(mat), pop, pdf = TRUE) si queremos generar el pdf
+Hoover.curve (rowSums(mat), pop, plot = FALSE)
+```
+
+## run the function for industry #1 only
+#sólo para la idustria uno
+```{r}
+Hoover.curve (mat[,1], pop)
+#Hoover.curve (mat[,1], pop, pdf = TRUE) sólo si queremos generar el pdf
+Hoover.curve (mat[,1], pop, plot = FALSE)
+```
+
+## run the function for industry #2 only (perfectly proportional to population)
+#para la industrai dos que es proporcional a la población
+```{r}
+Hoover.curve (mat[,2], pop)
+#Hoover.curve (mat[,2], pop, pdf = TRUE) para generar el pdf
+Hoover.curve (mat[,2], pop, plot = FALSE)
+```
+
+## run the function for industry #3 only (30% of the pop. produces 100% of the output)
+#para la industria tres
+```{r}
+Hoover.curve (mat[,3], pop)
+#Hoover.curve (mat[,3], pop, pdf = TRUE)
+Hoover.curve (mat[,3], pop, plot = FALSE)
+```
+
+## run the function for industry #4 only (55% of the pop. produces 100% of the output)
+##para la industria 4
+```{r}
+Hoover.curve (mat[,4], pop)
+#Hoover.curve (mat[,4], pop, pdf = TRUE)
+Hoover.curve (mat[,4], pop, plot = FALSE)
+```
+
+#Compare the distribution of the #industries
+Comparamos la distribución de las industriaas
+```{r}
+par(mfrow=c(2,2))
+Hoover.curve (mat[,1], pop)
+Hoover.curve (mat[,2], pop)
+Hoover.curve (mat[,3], pop)
+Hoover.curve (mat[,4], pop)
+```
+#Ejemplo 4. locational Gini curve
+
+## generate a region - industry matrix
+#generamos una otra matriz de industria región y la nombramos mat2
+```{r}
+mat2 = matrix (
+  c (100, 0, 0, 0, 0,
+     0, 15, 5, 70, 10,
+     0, 20, 10, 20, 50,
+     0, 25, 30, 5, 40,
+     0, 40, 55, 5, 0), ncol = 5, byrow = T)
+rownames(mat2) <- c ("R1", "R2", "R3", "R4", "R5")
+colnames(mat2) <- c ("I1", "I2", "I3", "I4", "I5")
+```
+
+## run the function (shows industry #5)
+##utilizamos la función locational.gini para hacer el gráfico
+```{r}
+locational.Gini.curve (mat2)
+#locational.Gini.curve (mat2, pdf = TRUE)sólos si queremos generar el pdf
+```
+
+#########################################################################################################
+#Ejemplo 5. Lorenze curve
+
+## generate vectors of industrial count
+##utilizamos el vector que ya habíamos creado
+#ind <- c(0, 10, 10, 30, 50)
+## run the function
+#corremos la función y generamos la curva del vector
+```{r}
+Lorenz.curve (ind)
+#Lorenz.curve (ind, pdf = TRUE) sólo si queremos generar un pdf de la curva
+Lorenz.curve (ind, plot = FALSE)
+```
+
+## generate a region - industry matrix
+## ocupamos la matriz mat que ya habíamos generado
+#mat = matrix (
+  c (0, 1, 0, 0,
+     0, 1, 0, 0,
+     0, 1, 0, 0,0, 1, 0, 1,
+     0, 1, 1, 1), ncol = 4, byrow = T)
+rownames(mat) <- c ("R1", "R2", "R3", "R4", "R5")
+colnames(mat) <- c ("I1", "I2", "I3", "I4")
+## run the function
+## corremos la función para la matriz
+```{r}
+Lorenz.curve (mat)
+#Lorenz.curve (mat, pdf = TRUE) sólo si queremos generar un pdf de la curva
+Lorenz.curve (mat, plot = FALSE)
+```
+
+## run the function by aggregating all industries
+#corremos la función y le agragamos las industrias que esta en los renglones
+```{r}
+Lorenz.curve (rowSums(mat))
+#Lorenz.curve (rowSums(mat), pdf = TRUE) sólo si queremos generar un pdf de la curva
+Lorenz.curve (rowSums(mat), plot = FALSE)
+```
+
+## run the function for industry #1 only (perfect equality)
+#graficamos y hacemos los cálculos sólo para la industria 1
+```{r}
+Lorenz.curve (mat[,1])
+#Lorenz.curve (mat[,1], pdf = TRUE) sólo si queremos generar un pdf de la curva
+Lorenz.curve (mat[,1], plot = FALSE)
+```
+
+## run the function for industry #2 only (perfect equality)
+#graficamos y hacemos los cálculos sólo para la industria 2
+```{r}
+Lorenz.curve (mat[,2])
+#Lorenz.curve (mat[,2], pdf = TRUE) sólo si queremos generar un pdf de la curva
+Lorenz.curve (mat[,2], plot = FALSE)
+```
+
+## run the function for industry #3 only (perfect unequality)
+#graficamos y hacemos los cálculos sólo para la industria 3
+```{r}
+Lorenz.curve (mat[,3])
+#Lorenz.curve (mat[,3], pdf = TRUE) sólo si queremos generar un pdf de la curva
+Lorenz.curve (mat[,3], plot = FALSE)
+```
+
+## run the function for industry #4 only (top 40% produces 100% of the output)
+#graficamos y hacemos los cálculos sólo para la industria 4
+```{r}
+Lorenz.curve (mat[,4])
+#Lorenz.curve (mat[,4], pdf = TRUE) sólo si queremos generar un pdf de la curva
+Lorenz.curve (mat[,4], plot = FALSE)
+```
+
+#Compare the distribution of the #industries
+#comparamos todas la industrias en una sola cuadrícula
+```{r}
+par(mfrow=c(2,2))
+Lorenz.curve (mat[,1])
+Lorenz.curve (mat[,2])
+Lorenz.curve (mat[,3])
+Lorenz.curve (mat[,4])
+```
+
+
+
+
